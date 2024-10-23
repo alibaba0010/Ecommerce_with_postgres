@@ -1,7 +1,19 @@
 // db.js
-import postgres from "postgres";
+import pkg from "pg";
+const { Pool } = pkg;
 
-const connectionString = process.env.DATABASE_URL;
-const sql = postgres(connectionString);
+// export const pool = new Pool({
+//   user: "postgres.yycpfdwzlymynbokexew",
+//   host: "aws-0-us-east-1.pooler.supabase.com",
+//   database: "postgres",
+//   password: "Akinkunmi100$",
+//   port: 6543,
+// });
 
-export default sql;
+export const pool = new Pool({
+  user: "postgres",
+  host: "localhost",
+  database: "students",
+  password: "Akinkunmi100$",
+  port: 5432,
+});

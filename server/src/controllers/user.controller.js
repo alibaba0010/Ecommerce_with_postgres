@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import UserModel from "../model/user.model";
+import UserModel, { getUsersOver } from "../model/user.model";
 import BadRequestError from "../errors/badRequest";
 
 class UsersController extends UserModel {
@@ -7,6 +7,7 @@ class UsersController extends UserModel {
   static async createUser(req, res) {
     const { username, email, password, confirmPassword } = req.body;
     UserModel.requiredFields(username, email, password, confirmPassword);
+    UserModel.validatePassword(password, confirmPassword);
     const checkUser = await UserModel.checkEmailExists(email);
     console.log("Checking user: " + checkUser);
     if (checkUser) {

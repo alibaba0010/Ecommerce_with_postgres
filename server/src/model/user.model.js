@@ -1,4 +1,4 @@
-import sql from "./../db";
+import pool from "./../db";
 import BadRequestError from "../errors/badRequest";
 import { checkEmailExists, getUserById, addUsers } from "../services/Query";
 
@@ -10,7 +10,8 @@ class UserModel {
   }
 
   static async checkEmailExists(email) {
-    const result = await sql.query(checkEmailExists, [email]);
+    const result = await client.query(checkEmailExists, [email]);
+    console.log("Email: ", result);
     return result.length > 0;
   }
 
@@ -30,6 +31,16 @@ class UserModel {
     const result = await sql.query(addUsers, [username, email, password]);
     return result.insertId;
   }
+}
+
+export async function getUsersOver(email) {
+  const users = await sql`
+    select s
+    from users s
+    where s.email = $1
+  `;
+  // users = Result [{ name: "Walter", age: 80 }, { name: 'Murray', age: 68 }, ...]
+  return users;
 }
 
 export default UserModel;
