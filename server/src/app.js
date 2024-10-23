@@ -3,7 +3,7 @@ import "express-async-errors";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
-import moduleName from "./routes/user.router";
+import userRouter from "./routes/user.router";
 import { errorHandler } from "./errors/error";
 import { routeError } from "./errors/route.error";
 dotenv.config();
@@ -20,7 +20,7 @@ app
   .use(json())
   .use(limiter)
   // .use("/products", express.static((__dirname, "./uploads")))
-  // .use("/v1", userRouter)
+  .use("/api/v1", userRouter)
   // .use("/v1", orderRouter)
   // .use("/v1/products", productRouter)
   // .use("/v1", cartRouter)
