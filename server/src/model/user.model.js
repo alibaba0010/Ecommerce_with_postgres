@@ -15,7 +15,7 @@ class UserModel {
   }
 
   static async checkEmailExists(email) {
-    const result = await sql`select * from users`;
+    const result = await sql`SELECT * FROM users WHERE email = ${email}`;
 
     console.log("Email: ", result);
     return result.length > 0;
@@ -38,11 +38,5 @@ class UserModel {
     return result.insertId;
   }
 }
-
-// export async function getUsersOver(email) {
-//   // const users = await sql`select * from users`;
-
-//   return users;
-// }
 
 export default UserModel;
