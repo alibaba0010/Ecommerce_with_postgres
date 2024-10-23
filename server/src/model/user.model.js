@@ -21,6 +21,16 @@ class UserModel {
     return result.length > 0;
   }
 
+  static checkIfExists = async (email, username) => {
+    const checkEmailExist =
+      await sql`SELECT * FROM users WHERE email = ${email}`;
+    const checkUsernameExist =
+      await sql`SELECT * FROM users WHERE username = ${username}`;
+    console.log(checkEmailExist);
+    console.log(checkUsernameExist);
+    if (checkEmailExist.length > 0 || checkUsernameExist > 0)
+      throw new BadRequestError("Email or username already exists");
+  };
   static requiredFields(username, email, password, confirmPassword) {
     if (!username || !email || !password || !confirmPassword) {
       throw new BadRequestError("Please fill all required fields");
@@ -34,7 +44,9 @@ class UserModel {
   }
 
   static async createUser(username, email, password) {
-    const result = await sql.query(addUsers, [username, email, password]);
+    const result =
+      await sql`INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${password})`;
+    console.log("Result: " + result.insertId);
     return result.insertId;
   }
 }

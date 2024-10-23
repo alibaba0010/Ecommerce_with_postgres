@@ -8,12 +8,11 @@ class UsersController extends UserModel {
     const { username, email, password, confirmPassword } = req.body;
     UserModel.requiredFields(username, email, password, confirmPassword);
     UserModel.validatePassword(password, confirmPassword);
-    const checkUser = await UserModel.checkEmailExists(email);
-    console.log("Checking user: " + checkUser);
-    if (checkUser) {
-      throw new BadRequestError(`Email ${email} already exists`);
-    }
-    res.status(StatusCodes.CREATED).json({ message: "User already exists" });
+    await UserModel.checkIfExists(email, username);
+    await UserModel.createUser(username, email, password);
+    res
+      .status(StatusCodes.CREATED)
+      .json({ message: "User added successfully" });
   }
 }
 
