@@ -3,8 +3,9 @@ import "express-async-errors";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
-import { errorHandler } from "./errors/error.js";
-import { routeError } from "./errors/route.error.js";
+import moduleName from "./routes/user.router";
+import { errorHandler } from "./errors/error";
+import { routeError } from "./errors/route.error";
 dotenv.config();
 
 const limiter = rateLimit({
