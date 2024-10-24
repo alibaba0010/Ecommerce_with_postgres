@@ -1,11 +1,11 @@
 import { Router } from "express";
-import UsersController from "../controllers/user.controller";
+import ProductController from "../controllers/product.controller.js";
 import { authenticateUser, verifyUser } from "../services/auth";
 
-const userRouter = Router();
+const productRouter = Router();
 
 productRouter
-  .post("/users", UsersController.createUser)
-  .post("/user", UsersController.loginUser);
+  .post("/users", ProductController)
+  .post("/user", ProductController);
 
 export default productRouter;
