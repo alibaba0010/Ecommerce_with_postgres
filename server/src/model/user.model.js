@@ -6,6 +6,8 @@ import {
   addUsers,
   getAllUsersQuery,
 } from "../services/Query";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 class UserModel {
   constructor() {}
@@ -42,7 +44,12 @@ class UserModel {
       throw new BadRequestError("Passwords do not match");
     }
   }
-
+  static hashPassword = async (password) => {
+    // TODO: Add password hashing logic
+    const salt = await bcrypt.genSalt(10);
+    const hasedPassword = await bcrypt.hash(password, salt);
+    return hasedPassword;
+  };
   static async createUser(username, email, password) {
     const result =
       await sql`INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${password})`;

@@ -9,7 +9,8 @@ class UsersController extends UserModel {
     UserModel.requiredFields(username, email, password, confirmPassword);
     UserModel.validatePassword(password, confirmPassword);
     await UserModel.checkIfExists(email, username);
-    await UserModel.createUser(username, email, password);
+    const hashedPassword = await UserModel.hashPassword(password);
+    await UserModel.createUser(username, email, hashedPassword);
     res
       .status(StatusCodes.CREATED)
       .json({ message: "User added successfully" });
