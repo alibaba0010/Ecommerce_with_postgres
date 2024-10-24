@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
-import UserModel, { getUsersOver } from "../model/user.model";
+import UserModel from "../model/user.model";
 import BadRequestError from "../errors/badRequest";
 import NotFoundError from "../errors/notFound";
 
-class UsersController extends UserModel {
+class UserController extends UserModel {
   constructor() {}
   static async createUser(req, res) {
     const { username, email, password, confirmPassword } = req.body;
@@ -17,20 +17,24 @@ class UsersController extends UserModel {
       .json({ message: "User added successfully" });
   }
   static async createAdmin(req, res) {
-    // TODO: check if user exist
-    // TODO: make user admin in db
-    // TODO: return updated user
+    const { username, email, password, confirmPassword } = req.body;
+    UserModel.requiredFields(username, email, password, confirmPassword);
+    UserModel.validatePassword(password, confirmPassword);
+    await UserModel.checkIfExists(email, username);
+    const hashedPassword = await UserModel.hashPassword(password);
+    await UserModel.createAdmin(username, email, hashedPassword);
+
+    res
+      .status(StatusCodes.CREATED)
+      .json({ message: "User added successfully" });
   }
   static async loginUser(req, res) {
     const { email, password } = req.body;
     if (!email || !password)
       throw new BadRequestError("Fill all required fields");
-    // TODO: check if user exist
     const user = await UserModel.checkEmailExists(email);
     if (user.length < 0) throw new NotFoundError("User not found");
-    // TODO: compare password with hashed password in db
     await UserModel.comparePassword(user[0].password, password);
-    // TODO: generate jwt token
     const token = await UserModel.createJWT(
       user[0].id,
       user[0].email,
@@ -69,4 +73,4 @@ class UsersController extends UserModel {
   }
 }
 
-export default UsersController;
+export default UserController;
