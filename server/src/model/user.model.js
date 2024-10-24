@@ -8,14 +8,16 @@ import {
 } from "../services/Query";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+
+const exp = process.env.JWT_LIFETIME;
 
 class UserModel {
   constructor() {}
   static async checkEmailExists(email) {
     const result = await sql`SELECT * FROM users WHERE email = ${email}`;
-
-    console.log("Email: ", result);
-    return result.length > 0;
+    return result;
   }
 
   static checkIfExists = async (email, username) => {
@@ -51,6 +53,23 @@ class UserModel {
     console.log("Result: " + result.insertId);
     return result.insertId;
   }
+  static comparePassword = async (userPassword, password) => {
+    console.log(`Compare password: ${userPassword} to ${password}`);
+    const match = await bcrypt.compare(password, userPassword);
+    if (!match) throw new BadRequestError("Invalid password");
+    return;
+  };
+  static createJWT = async (id, email, isAdmin) => {
+    const token = jwt.sign(
+      { userId: id, email, isAdmin },
+      process.env.JWT_SEC,
+      {
+        expiresIn: exp,
+      }
+    );
+
+    return token;
+  };
 }
 
 export default UserModel;

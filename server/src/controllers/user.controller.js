@@ -1,6 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import UserModel, { getUsersOver } from "../model/user.model";
 import BadRequestError from "../errors/badRequest";
+import NotFoundError from "../errors/notFound";
 
 class UsersController extends UserModel {
   constructor() {}
@@ -22,19 +23,38 @@ class UsersController extends UserModel {
   }
   static async loginUser(req, res) {
     const { email, password } = req.body;
+    if (!email || !password)
+      throw new BadRequestError("Fill all required fields");
     // TODO: check if user exist
     const user = await UserModel.checkEmailExists(email);
-    // TODO: get user from db
+    if (user.length < 0) throw new NotFoundError("User not found");
     // TODO: compare password with hashed password in db
+    await UserModel.comparePassword(user[0].password, password);
     // TODO: generate jwt token
+    const token = await UserModel.createJWT(
+      user[0].id,
+      user[0].email,
+      user[0].isAdmin
+    );
+    res.cookie("sessions", token, {
+      httpOnly: true,
+      signed: true,
+      sameSite: "none", // for cross-browser compatibility
+      secure: true,
+      partitioned: true,
+      created: createdAt.toDateString(),
+      path: "/",
+      maxAge: 60 * 60 * 24,
+    });
+    res
+      .status(StatusCodes.OK)
+      .json({ message: "Logged in successfully", user: user });
     // TODO: return jwt token to user
+    res
+      .status(StatusCodes.OK)
+      .json({ message: "Logged in successfully", user: user });
   }
-  static async loginAdmin(req, res) {}
-  static async getUsers(req, res) {
-    // TODO: check if user exist
-    // TODO: get user from db
-    // const users = await UserModel.getAllUsersQuery();
-  }
+
   static async updateUser(req, res) {
     // TODO: check if user exist
     // TODO: get user from db
