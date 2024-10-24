@@ -4,6 +4,7 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import userRouter from "./routes/user.router";
+import productRouter from "./routes/product.router.js";
 import { errorHandler } from "./errors/error";
 import { routeError } from "./errors/route.error";
 dotenv.config();
@@ -19,10 +20,11 @@ app
   .use(cors())
   .use(json())
   .use(limiter)
-  // .use("/products", express.static((__dirname, "./uploads")))
+  .use(cookieParser(process.env.JWT_SEC))
+
   .use("/api/v1", userRouter)
   // .use("/v1", orderRouter)
-  // .use("/v1/products", productRouter)
+  .use("/api/v1/products", productRouter)
   // .use("/v1", cartRouter)
   // .use("/", express.static("public"))
 
