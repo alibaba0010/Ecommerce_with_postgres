@@ -3,6 +3,7 @@ import "express-async-errors";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.router";
 import productRouter from "./routes/product.router.js";
 import { errorHandler } from "./errors/error";
