@@ -11,11 +11,6 @@ import jwt from "jsonwebtoken";
 
 class UserModel {
   constructor() {}
-  static async checkUserExist(userId) {
-    const user = await sql.query(getUserById, [userId]);
-    return user.length > 0;
-  }
-
   static async checkEmailExists(email) {
     const result = await sql`SELECT * FROM users WHERE email = ${email}`;
 

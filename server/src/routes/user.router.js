@@ -4,6 +4,8 @@ import { authenticateUser, verifyUser } from "../services/auth";
 
 const userRouter = Router();
 
-userRouter.post("/users", UsersController.createUser);
+userRouter
+  .post("/users", UsersController.createUser)
+  .post("/user", UsersController.loginUser);
 
 export default userRouter;
