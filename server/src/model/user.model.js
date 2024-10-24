@@ -52,7 +52,7 @@ class UserModel {
   }
   static async createAdmin(username, email, password) {
     const result =
-      await sql`INSERT INTO users (username, email, password, isAdmin) VALUES (${username}, ${email}, ${password}, true)`;
+      await sql`INSERT INTO users (username, email, password, "isAdmin") VALUES (${username}, ${email}, ${password}, true)`;
     return result.insertId;
   }
   static comparePassword = async (userPassword, password) => {
