@@ -40,23 +40,14 @@ class UserController extends UserModel {
       user[0].email,
       user[0].isAdmin
     );
-
-    const createdAt = new Date(Date.now());
-    res.cookie("token", token, {
-      httpOnly: true,
-      signed: true,
-      sameSite: "none", // for cross-browser compatibility
-      secure: true,
-      partitioned: true,
-      created: createdAt.toDateString(),
-      path: "/",
-      maxAge: 60 * 60 * 24,
-    });
+    req.session = {
+      jwt: token,
+    };
     res
       .status(StatusCodes.OK)
       .json({ message: "Logged in successfully", user: user });
   }
-
+  static async getUser(req, res) {}
   static async updateUser(req, res) {
     // TODO: check if user exist
     // TODO: get user from db

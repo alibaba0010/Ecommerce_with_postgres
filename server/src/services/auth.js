@@ -3,6 +3,7 @@ import UnauthenticatedError from "../errors/unaunthenticated";
 import UnAuthorizedError from "../errors/unauthorized";
 
 import User from "../model/user.model";
+import { checkEmailExists } from "./Query";
 
 export const authenticateUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -17,7 +18,11 @@ export const authenticateUser = async (req, res, next) => {
   }
   try {
     const decode = jwt.verify(token, process.env.JWT_SEC);
-    req.user = { userId: decode.userId, isGoogle: decode.isGoogle };
+    req.user = {
+      userId: decode.userId,
+      email: decode.email,
+      isAdmin: decode.isAdmin,
+    };
 
     next();
   } catch (err) {
@@ -28,7 +33,9 @@ export const authenticateUser = async (req, res, next) => {
 
 // VERIFY USERS
 export async function verifyUser(req, res, next) {
-  const user = await User.findById(req.user.userId).select("-password");
+  const { email } = req.user;
+  const user = await checkEmailExists(email);
+  console.log("User verified: ", user);
   if (user) {
     next();
   } else {
@@ -36,8 +43,8 @@ export async function verifyUser(req, res, next) {
   }
 }
 
-// VERIFY CREATOR
-export async function verifyCreator(req, res, next) {
+// VERIFY ADMIN
+export async function verifyAdmin(req, res, next) {
   const user = await User.findById(req.user.userId).select("-password");
   if (!user) {
     throw new UnauthenticatedError("User not authenticated");
@@ -45,6 +52,6 @@ export async function verifyCreator(req, res, next) {
   if (user.isGoogle === true) {
     next();
   } else {
-    throw new UnAuthorizedError("Only creator is ascessible");
+    throw new UnAuthorizedError("Only Admin is ascessible");
   }
 }
