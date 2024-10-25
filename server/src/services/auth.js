@@ -47,11 +47,12 @@ export async function verifyUser(req, res, next) {
 
 // VERIFY ADMIN
 export async function verifyAdmin(req, res, next) {
-  const user = await User.findById(req.user.userId).select("-password");
-  if (!user) {
+  const { userId } = req.user;
+  const user = await UserModel.checkEmailExists(userId);
+  if (!user.length) {
     throw new UnauthenticatedError("User not authenticated");
   }
-  if (user.isGoogle === true) {
+  if (user[0].isAdmin === true) {
     next();
   } else {
     throw new UnAuthorizedError("Only Admin is ascessible");
