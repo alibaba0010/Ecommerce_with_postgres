@@ -6,6 +6,8 @@ const productRouter = Router();
 
 productRouter
   .post("/new", authenticateUser, verifyAdmin, ProductController.createProduct)
-  .post("/user", ProductController);
+  .get("/", authenticateUser, verifyAdmin, ProductController.getProductsByAdmin)
+  .get("/", authenticateUser, verifyUser, ProductController.getProducts)
+  .get("/:id", authenticateUser, verifyUser, ProductController.getProductById);
 
 export default productRouter;

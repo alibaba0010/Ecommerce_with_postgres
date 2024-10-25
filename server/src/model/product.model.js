@@ -21,5 +21,12 @@ class ProductModel {
       await sql`INSERT INTO product (title, description, price, quantity, category, "userId") VALUES (${title}, ${description}, ${price}, ${quantity}, ${category}, ${userId} ) `;
     return result[0];
   }
+  static async getProductsByAdmin(userId) {
+    // TODO: Implement logic to get products by admin from the database
+    const products =
+      await sql`SELECT * FROM product WHERE "userId" = ${userId}`;
+    console.log("Products", products);
+    return products;
+  }
 }
 export default ProductModel;
