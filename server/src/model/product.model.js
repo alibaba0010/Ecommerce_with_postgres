@@ -28,5 +28,14 @@ class ProductModel {
     console.log("Products", products);
     return products;
   }
+  static async getAllProducts() {
+    // TODO: Implement logic to get all products from the database
+    const products = await sql`SELECT * FROM product`;
+    return products;
+  }
+  static async getProductById(id) {
+    const product = await sql`SELECT * FROM product WHERE id = ${id}`;
+    return product;
+  }
 }
 export default ProductModel;

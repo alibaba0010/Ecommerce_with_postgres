@@ -44,7 +44,9 @@ class ProductController extends ProductModel {
     const { id } = req.params;
     const product = await ProductModel.getProductById(id);
     if (!product.length) throw new NotFoundError("Product not found");
-    res.status(StatusCodes.OK).json(product);
+    const { created_at, userId, ...others } = product[0];
+
+    res.status(StatusCodes.OK).json(others);
   }
 }
 
