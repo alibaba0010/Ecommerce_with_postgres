@@ -46,7 +46,6 @@ export async function verifyUser(req, res, next) {
 export async function verifyAdmin(req, res, next) {
   const { userId } = req.user;
   const user = await UserModel.getUserById(userId);
-  console.log(user.length);
   if (user.length === 0) {
     throw new UnauthenticatedError("User not authenticated");
   }
