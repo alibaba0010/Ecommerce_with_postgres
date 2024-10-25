@@ -4,6 +4,7 @@ import UnAuthorizedError from "../errors/unauthorized";
 
 import User from "../model/user.model";
 import { checkEmailExists } from "./Query";
+import UserModel from "../model/user.model";
 
 export const authenticateUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -34,9 +35,10 @@ export const authenticateUser = async (req, res, next) => {
 // VERIFY USERS
 export async function verifyUser(req, res, next) {
   const { email } = req.user;
-  const user = await checkEmailExists(email);
-  console.log("User verified: ", user);
-  if (user) {
+
+  const user = await UserModel.checkEmailExists(email);
+
+  if (user.length > 0) {
     next();
   } else {
     throw new UnAuthorizedError("Please login to access");
