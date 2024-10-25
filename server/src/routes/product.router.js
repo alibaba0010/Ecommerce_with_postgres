@@ -8,6 +8,12 @@ productRouter
   .post("/new", authenticateUser, verifyAdmin, ProductController.createProduct)
   .get("/", authenticateUser, verifyAdmin, ProductController.getProductsByAdmin)
   .get("/", authenticateUser, verifyUser, ProductController.getProducts)
-  .get("/:id", authenticateUser, verifyUser, ProductController.getProductById);
+  .get("/:id", authenticateUser, verifyUser, ProductController.getProductById)
+  .delete(
+    "/:id",
+    authenticateUser,
+    verifyAdmin,
+    ProductController.deleteProductById
+  );
 
 export default productRouter;

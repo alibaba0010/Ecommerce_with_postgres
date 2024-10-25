@@ -48,6 +48,14 @@ class ProductController extends ProductModel {
 
     res.status(StatusCodes.OK).json(others);
   }
+  static async deleteProductById(req, res) {
+    const { id } = req.params;
+    const { userId } = req.user;
+    await ProductModel.deleteProductById(id, userId);
+    res
+      .status(StatusCodes.OK)
+      .json({ message: "Product deleted successfully" });
+  }
 }
 
 export default ProductController;

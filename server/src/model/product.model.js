@@ -1,5 +1,6 @@
 import sql from "../db";
 import BadRequestError from "../errors/badRequest";
+import NotFoundError from "../errors/notFound";
 
 class ProductModel {
   constructor() {}
@@ -25,7 +26,6 @@ class ProductModel {
     // TODO: Implement logic to get products by admin from the database
     const products =
       await sql`SELECT * FROM product WHERE "userId" = ${userId}`;
-    console.log("Products", products);
     return products;
   }
   static async getAllProducts() {
@@ -36,6 +36,15 @@ class ProductModel {
   static async getProductById(id) {
     const product = await sql`SELECT * FROM product WHERE id = ${id}`;
     return product;
+  }
+  static async deleteProductById(id, userId) {
+    // TODO: Implement logic to delete a product by admin from the database
+    const user =
+      await sql`SELECT FROM product WHERE id = ${id} AND "userId" = ${userId}`;
+    if (!user.length) throw new NotFoundError("Product not found");
+    const result =
+      await sql`DELETE FROM product WHERE id = ${id} AND "userId" = ${userId}`;
+    return result;
   }
 }
 export default ProductModel;
