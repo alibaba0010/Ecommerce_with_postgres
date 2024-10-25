@@ -35,7 +35,6 @@ class UserController extends UserModel {
     const user = await UserModel.checkEmailExists(email);
     if (user.length < 0) throw new NotFoundError("User not found");
     await UserModel.comparePassword(user[0].password, password);
-    console.log("Before token");
     const token = await UserModel.createJWT(
       user[0].id,
       user[0].email,
