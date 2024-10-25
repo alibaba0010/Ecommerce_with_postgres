@@ -19,6 +19,10 @@ class UserModel {
     const result = await sql`SELECT * FROM users WHERE email = ${email}`;
     return result;
   }
+  static async getUserById(id) {
+    const result = await sql`SELECT * FROM users WHERE id = ${id}`;
+    return result;
+  }
 
   static checkIfExists = async (email, username) => {
     const checkEmailExist =
