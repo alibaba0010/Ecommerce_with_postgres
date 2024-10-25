@@ -1,9 +1,6 @@
 import jwt from "jsonwebtoken";
 import UnauthenticatedError from "../errors/unaunthenticated";
 import UnAuthorizedError from "../errors/unauthorized";
-
-import User from "../model/user.model";
-import { checkEmailExists } from "./Query";
 import UserModel from "../model/user.model";
 
 export const authenticateUser = async (req, res, next) => {
@@ -48,8 +45,9 @@ export async function verifyUser(req, res, next) {
 // VERIFY ADMIN
 export async function verifyAdmin(req, res, next) {
   const { userId } = req.user;
-  const user = await UserModel.checkEmailExists(userId);
-  if (!user.length) {
+  const user = await UserModel.getUserById(userId);
+  console.log(user.length);
+  if (user.length === 0) {
     throw new UnauthenticatedError("User not authenticated");
   }
   if (user[0].isAdmin === true) {
