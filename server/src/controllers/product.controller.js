@@ -6,11 +6,10 @@ import NotFoundError from "../errors/notFound";
 class ProductController extends ProductModel {
   constructor() {}
   static async createProduct(req, res) {
-    const { name, description, price, quantity, category } = req.body;
-    ProductModel.requiredFields(name, description, price, quantity, category);
-    await ProductModel.checkUniqueName(name);
+    const { title, description, price, quantity, category } = req.body;
+    ProductModel.requiredFields(title, description, price, quantity, category);
     const product = await ProductModel.createProduct(
-      name,
+      title,
       description,
       price,
       quantity,
