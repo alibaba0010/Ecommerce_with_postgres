@@ -5,7 +5,7 @@ import { authenticateUser, verifyUser, verifyAdmin } from "../services/auth";
 const productRouter = Router();
 
 productRouter
-  .post("/users", authenticateUser, verifyAdmin, ProductController)
+  .post("/product/new", authenticateUser, verifyAdmin, ProductController)
   .post("/user", ProductController);
 
 export default productRouter;
