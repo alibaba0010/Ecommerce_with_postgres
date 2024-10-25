@@ -24,7 +24,9 @@ class ProductController extends ProductModel {
       category,
       userId
     );
-    res.status(StatusCodes.CREATED).json(product);
+    res
+      .status(StatusCodes.CREATED)
+      .json({ message: "Product created successfully" });
   }
 }
 
