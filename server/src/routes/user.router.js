@@ -7,6 +7,7 @@ const userRouter = Router();
 userRouter
   .post("/users", UserController.createUser)
   .post("/users/admin", UserController.createAdmin)
-  .post("/user", UserController.loginUser);
+  .post("/user", UserController.loginUser)
+  .get("/user", authenticateUser, verifyUser, UserController.getUser);
 
 export default userRouter;
