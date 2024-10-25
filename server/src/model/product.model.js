@@ -18,8 +18,8 @@ class ProductModel {
   ) {
     // TODO: Implement logic to create a product in the database
     const result =
-      await sql`INSERT INTO product (title, description, price, quantity, category, "userId") VALUES (?, ?, ?) `;
-    // TODO: Return the created product
+      await sql`INSERT INTO product (title, description, price, quantity, category, "userId") VALUES (${title}, ${description}, ${price}, ${quantity}, ${category}, ${userId} ) `;
+    return result[0];
   }
 }
 export default ProductModel;
