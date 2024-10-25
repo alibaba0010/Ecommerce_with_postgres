@@ -35,12 +35,15 @@ class UserController extends UserModel {
     const user = await UserModel.checkEmailExists(email);
     if (user.length < 0) throw new NotFoundError("User not found");
     await UserModel.comparePassword(user[0].password, password);
+    console.log("Before token");
     const token = await UserModel.createJWT(
       user[0].id,
       user[0].email,
       user[0].isAdmin
     );
-    res.cookie("sessions", token, {
+
+    const createdAt = new Date(Date.now());
+    res.cookie("token", token, {
       httpOnly: true,
       signed: true,
       sameSite: "none", // for cross-browser compatibility
@@ -50,10 +53,6 @@ class UserController extends UserModel {
       path: "/",
       maxAge: 60 * 60 * 24,
     });
-    res
-      .status(StatusCodes.OK)
-      .json({ message: "Logged in successfully", user: user });
-    // TODO: return jwt token to user
     res
       .status(StatusCodes.OK)
       .json({ message: "Logged in successfully", user: user });

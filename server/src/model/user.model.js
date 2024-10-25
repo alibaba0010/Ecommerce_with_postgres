@@ -40,7 +40,6 @@ class UserModel {
     }
   }
   static hashPassword = async (password) => {
-    // TODO: Add password hashing logic
     const salt = await bcrypt.genSalt(10);
     const hasedPassword = await bcrypt.hash(password, salt);
     return hasedPassword;
