@@ -51,7 +51,7 @@ class UserController extends UserModel {
     const { userId } = req.user;
     const user = await UserModel.getUserById(userId);
     const { username, email, isAdmin } = user[0];
-    res.status(StatusCodes.OK).json({ username, email, isAdmin });
+    res.status(StatusCodes.OK).json({ user: { username, email, isAdmin } });
   }
   static async updateUser(req, res) {
     // TODO: check if user exist
