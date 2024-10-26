@@ -48,6 +48,15 @@ class UserModel {
     const hasedPassword = await bcrypt.hash(password, salt);
     return hasedPassword;
   };
+  static checkPassword = (password) => {
+    if (password.length < 8 || password.length > 18)
+      throw new BadRequestError("Password must be between 8 and 18 characters");
+  };
+  static validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email))
+      throw new BadRequestError("Invalid email format");
+  };
   static async createUser(username, email, password) {
     const result =
       await sql`INSERT INTO users (username, email, password) VALUES (${username}, ${email}, ${password})`;

@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import UserModel from "../model/user.model";
 import BadRequestError from "../errors/badRequest";
 import NotFoundError from "../errors/notFound";
+import ProductModel from "../model/product.model.js";
 
 class UserController extends UserModel {
   constructor() {}
@@ -9,6 +10,8 @@ class UserController extends UserModel {
     const { username, email, password, confirmPassword } = req.body;
     UserModel.requiredFields(username, email, password, confirmPassword);
     UserModel.validatePassword(password, confirmPassword);
+    UserModel.checkPassword(password);
+    UserModel.validateEmail(email);
     await UserModel.checkIfExists(email, username);
     const hashedPassword = await UserModel.hashPassword(password);
     await UserModel.createUser(username, email, hashedPassword);
@@ -20,6 +23,8 @@ class UserController extends UserModel {
     const { username, email, password, confirmPassword } = req.body;
     UserModel.requiredFields(username, email, password, confirmPassword);
     UserModel.validatePassword(password, confirmPassword);
+    UserModel.checkPassword(password);
+    UserModel.validateEmail(email);
     await UserModel.checkIfExists(email, username);
     const hashedPassword = await UserModel.hashPassword(password);
     await UserModel.createAdmin(username, email, hashedPassword);
@@ -70,13 +75,18 @@ class UserController extends UserModel {
     const user = await UserModel.getUserById(userId);
     if (!user.length) throw new NotFoundError("User not found");
     // TODO: check if user is admin
-    console.log(user);
-    // TODO: check if user has any products
-    // TODO: check if user has any orders
-    // TODO: check if user has any reviews
-    // TODO: check if user has any transactions
-    // TODO: check if user has any wishlists
-    // TODO: check if user has any favorites
+    console.log(user[0]);
+    const { isAdmin } = user[0];
+    console.log("isAdmin: " + isAdmin);
+    if (isAdmin === true) {
+      // TODO: check if user has any products
+      const checkProduct = await ProductModel.checkProduct(user[0].id);
+      // TODO: check if user has any orders
+      // TODO: check if user has any reviews
+      // TODO: check if user has any transactions
+      // TODO: check if user has any wishlists
+      // TODO: check if user has any favorites
+    }
     // TODO: check if user exist
     // TODO: get user from db
     // TODO: delete user from db

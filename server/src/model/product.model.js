@@ -46,5 +46,12 @@ class ProductModel {
       await sql`DELETE FROM product WHERE id = ${id} AND "userId" = ${userId}`;
     return result;
   }
+  static async checkProduct(userId) {
+    // TODO: Implement logic to check if a user has any products in the database
+    const result = await sql`SELECT * FROM product WHERE "userId" = ${userId}`;
+    if (result.length)
+      await sql`DELETE FROM product WHERE "userId" = ${userId}`;
+    return result;
+  }
 }
 export default ProductModel;
