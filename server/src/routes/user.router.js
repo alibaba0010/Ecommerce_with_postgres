@@ -8,6 +8,7 @@ userRouter
   .post("/users", UserController.createUser)
   .post("/users/admin", UserController.createAdmin)
   .post("/user", UserController.loginUser)
-  .get("/user", authenticateUser, verifyUser, UserController.getUser);
+  .get("/user", authenticateUser, verifyUser, UserController.getUser)
+  .patch("/user", authenticateUser, verifyUser, UserController.updateUser);
 
 export default userRouter;

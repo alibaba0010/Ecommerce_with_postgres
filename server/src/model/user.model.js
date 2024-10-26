@@ -29,7 +29,7 @@ class UserModel {
       await sql`SELECT * FROM users WHERE email = ${email}`;
     const checkUsernameExist =
       await sql`SELECT * FROM users WHERE username = ${username}`;
-    if (checkEmailExist.length > 0 || checkUsernameExist > 0)
+    if (checkEmailExist.length || checkUsernameExist.length)
       throw new BadRequestError("Email or username already exists");
   };
   static requiredFields(username, email, password, confirmPassword) {
@@ -57,6 +57,11 @@ class UserModel {
     const result =
       await sql`INSERT INTO users (username, email, password, "isAdmin") VALUES (${username}, ${email}, ${password}, true)`;
     return result.insertId;
+  }
+  static async updateUser(username, newUsername) {
+    console.log(`${username} ${newUsername}`);
+    const result =
+      await sql`UPDATE users SET username = ${newUsername} WHERE username = ${username}`;
   }
   static comparePassword = async (userPassword, password) => {
     const match = await bcrypt.compare(password, userPassword);

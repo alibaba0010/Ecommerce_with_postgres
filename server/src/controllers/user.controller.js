@@ -54,10 +54,17 @@ class UserController extends UserModel {
     res.status(StatusCodes.OK).json({ user: { username, email, isAdmin } });
   }
   static async updateUser(req, res) {
-    // TODO: check if user exist
-    // TODO: get user from db
+    const { userId } = req.user;
+    const { username } = req.body;
+    const user = await UserModel.getUserById(userId);
+    if (!user.length) throw new NotFoundError("User not found");
+    console.log("User: " + user);
+    console.log("User 1: " + user[0]);
+
     // TODO: update user in db
+    const newUser = await UserModel.updateUser(user[0].username, username);
     // TODO: return updated user
+    res.status(StatusCodes.OK).json({ message: "User updated successfully" });
   }
   static async deleteUser(req, res) {
     // TODO: check if user exist
