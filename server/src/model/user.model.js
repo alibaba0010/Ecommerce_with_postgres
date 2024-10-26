@@ -59,9 +59,9 @@ class UserModel {
     return result.insertId;
   }
   static async updateUser(username, newUsername) {
-    console.log(`${username} ${newUsername}`);
     const result =
       await sql`UPDATE users SET username = ${newUsername} WHERE username = ${username}`;
+    return result;
   }
   static comparePassword = async (userPassword, password) => {
     const match = await bcrypt.compare(password, userPassword);

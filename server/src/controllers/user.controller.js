@@ -56,10 +56,9 @@ class UserController extends UserModel {
   static async updateUser(req, res) {
     const { userId } = req.user;
     const { username } = req.body;
+    if (!username) throw new BadRequestError("Please provide a username");
     const user = await UserModel.getUserById(userId);
     if (!user.length) throw new NotFoundError("User not found");
-    console.log("User: " + user);
-    console.log("User 1: " + user[0]);
 
     // TODO: update user in db
     const newUser = await UserModel.updateUser(user[0].username, username);
@@ -67,10 +66,22 @@ class UserController extends UserModel {
     res.status(StatusCodes.OK).json({ message: "User updated successfully" });
   }
   static async deleteUser(req, res) {
+    const { userId } = req.user;
+    const user = await UserModel.getUserById(userId);
+    if (!user.length) throw new NotFoundError("User not found");
+    // TODO: check if user is admin
+    console.log(user);
+    // TODO: check if user has any products
+    // TODO: check if user has any orders
+    // TODO: check if user has any reviews
+    // TODO: check if user has any transactions
+    // TODO: check if user has any wishlists
+    // TODO: check if user has any favorites
     // TODO: check if user exist
     // TODO: get user from db
     // TODO: delete user from db
     // TODO: return user deleted successfully
+    res.status(StatusCodes.OK).json({ message: "User deleted successfully" });
   }
 }
 
