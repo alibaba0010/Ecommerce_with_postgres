@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import ProductModel from "../model/product.model.js";
 import BadRequestError from "../errors/badRequest";
 import NotFoundError from "../errors/notFound";
-import UserModel from "../model/user.model.js";
 
 class ProductController extends ProductModel {
   constructor() {}
