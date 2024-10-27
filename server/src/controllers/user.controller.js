@@ -80,7 +80,7 @@ class UserController extends UserModel {
     console.log("isAdmin: " + isAdmin);
     if (isAdmin === true) {
       // TODO: check if user has any products
-      const checkProduct = await ProductModel.checkProduct(user[0].id);
+      await ProductModel.checkProduct(user[0].id);
       // TODO: check if user has any orders
       // TODO: check if user has any reviews
       // TODO: check if user has any transactions
@@ -90,6 +90,7 @@ class UserController extends UserModel {
     // TODO: check if user exist
     // TODO: get user from db
     // TODO: delete user from db
+    await UserModel.deleteUser(user[0].id);
     // TODO: return user deleted successfully
     res.status(StatusCodes.OK).json({ message: "User deleted successfully" });
   }

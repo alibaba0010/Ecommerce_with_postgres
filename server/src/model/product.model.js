@@ -51,7 +51,7 @@ class ProductModel {
     const result = await sql`SELECT * FROM product WHERE "userId" = ${userId}`;
     if (result.length)
       await sql`DELETE FROM product WHERE "userId" = ${userId}`;
-    return result;
+    return;
   }
 }
 export default ProductModel;

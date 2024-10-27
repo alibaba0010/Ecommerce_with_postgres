@@ -72,6 +72,10 @@ class UserModel {
       await sql`UPDATE users SET username = ${newUsername} WHERE username = ${username}`;
     return result;
   }
+  static async deleteUser(id) {
+    const result = await sql`DELETE FROM users WHERE id = ${id}`;
+    return result;
+  }
   static comparePassword = async (userPassword, password) => {
     const match = await bcrypt.compare(password, userPassword);
     if (!match) throw new BadRequestError("Invalid password");
